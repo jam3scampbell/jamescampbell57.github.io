@@ -2,200 +2,1271 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>James Campbell</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>James Campbell | AI Researcher</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Dark Mode (Default) */
+      --bg: #0a0a14;
+      --text: #f1f1f8;
+      --text-light: #abafc3;
+      --accent: #1d9bf0; /* Twitter blue */
+      --accent-light: rgba(29, 155, 240, 0.12);
+      --card-bg: rgba(29, 29, 47, 0.7);
+      --card-border: rgba(255, 255, 255, 0.07);
+      --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      --nebula-color: linear-gradient(125deg, rgba(13, 32, 58, 0.4), rgba(36, 65, 112, 0.1), rgba(20, 33, 61, 0.2));
+      --aurora-color: linear-gradient(90deg, rgba(29, 155, 240, 0.2) 0%, rgba(76, 201, 240, 0.1) 50%, rgba(9, 127, 183, 0.1) 100%);
+      --star-color: #fff;
+      --icon-color: var(--accent);
+      
+      /* Common Variables */
+      --spacing-xs: 0.5rem;
+      --spacing-sm: 1rem;
+      --spacing-md: 2rem;
+      --spacing-lg: 4rem;
+      --spacing-xl: 6rem;
+      --border-radius: 16px;
+      --font-serif: 'Fraunces', serif;
+      --font-sans: 'DM Sans', sans-serif;
+    }
+    
+    /* Light Mode - Dyson Sphere/Sun inspired */
+    .light-mode {
+      --bg: #fdf2e4;
+      --text: #1a1a2e;
+      --text-light: #4a4a6a;
+      --accent: #f0651d; /* Solar orange */
+      --accent-light: rgba(240, 101, 29, 0.12);
+      --card-bg: rgba(255, 252, 245, 0.85);
+      --card-border: rgba(240, 101, 29, 0.1);
+      --card-shadow: 0 8px 30px rgba(240, 101, 29, 0.1);
+      --nebula-color: linear-gradient(125deg, rgba(255, 200, 112, 0.3), rgba(255, 170, 70, 0.2), rgba(255, 150, 80, 0.2));
+      --aurora-color: linear-gradient(90deg, rgba(255, 184, 77, 0.15) 0%, rgba(255, 140, 40, 0.1) 50%, rgba(255, 100, 20, 0.08) 100%);
+      --star-color: #f0801d;
+      --icon-color: var(--accent);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: var(--font-sans);
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--text);
+      background-color: var(--bg);
+      overflow-x: hidden;
+    }
+    
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    
+    a:hover {
+      color: var(--accent);
+    }
+    
+    h1, h2, h3, h4 {
+      font-family: var(--font-serif);
+      font-weight: 500;
+      line-height: 1.3;
+    }
+    
+    h1 {
+      font-size: clamp(3rem, 6vw, 4rem);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    h2 {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      margin-bottom: var(--spacing-md);
+      position: relative;
+      display: inline-block;
+    }
+    
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 3rem;
+      height: 2px;
+      background-color: var(--accent);
+    }
+    
+    h3 {
+      font-size: clamp(1.3rem, 2vw, 1.8rem);
+      margin-bottom: var(--spacing-xs);
+    }
+    
+    p {
+      margin-bottom: var(--spacing-md);
+    }
+    
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: var(--border-radius);
+    }
+    
+    .container {
+      width: 90%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 var(--spacing-sm);
+      position: relative;
+      z-index: 2;
+    }
+    
+    /* Animation Background */
+    .cosmic-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      overflow: hidden;
+    }
+    
+    .stars {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      background: radial-gradient(ellipse at center, rgba(7, 7, 19, 0.5) 0%, rgba(10, 10, 20, 1) 100%);
+    }
+    
+    .light-mode .stars {
+      background: radial-gradient(circle at center, rgba(255, 180, 50, 0.3) 0%, rgba(253, 242, 228, 0.8) 80%);
+    }
+    
+    .star {
+      position: absolute;
+      background-color: var(--star-color);
+      border-radius: 50%;
+      opacity: 0;
+      animation: twinkle var(--duration) infinite ease-in-out;
+      animation-delay: var(--delay);
+      box-shadow: 0 0 4px 1px var(--star-color);
+    }
+    
+    .solar-flare {
+      position: absolute;
+      background: radial-gradient(circle, rgba(255, 150, 50, 0.6) 0%, rgba(255, 100, 0, 0) 70%);
+      border-radius: 50%;
+      filter: blur(20px);
+      opacity: 0;
+      animation: flare var(--duration) infinite ease-in-out;
+      animation-delay: var(--delay);
+      z-index: 0;
+    }
+    
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; transform: scale(0.3); }
+      50% { opacity: var(--opacity); transform: scale(1.2); }
+    }
+    
+    @keyframes flare {
+      0%, 100% { opacity: 0; transform: scale(0.8) rotate(0deg); }
+      50% { opacity: 0.4; transform: scale(1.2) rotate(15deg); }
+    }
+    
+    .nebula {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--nebula-color);
+      filter: blur(60px);
+      opacity: 0.5;
+      z-index: 0;
+      animation: nebula-shift 20s infinite alternate ease-in-out;
+    }
+    
+    @keyframes nebula-shift {
+      0% { transform: scale(1) rotate(0deg); opacity: 0.4; }
+      50% { opacity: 0.6; }
+      100% { transform: scale(1.1) rotate(3deg); opacity: 0.4; }
+    }
+    
+    .aurora {
+      position: absolute;
+      bottom: -100px;
+      left: -200px;
+      width: 200%;
+      height: 300px;
+      background: var(--aurora-color);
+      filter: blur(70px);
+      transform: rotate(-10deg);
+      opacity: 0.3;
+      animation: aurora-shift 15s infinite alternate ease-in-out;
+    }
+    
+    @keyframes aurora-shift {
+      0% { transform: translateX(-5%) rotate(-10deg); opacity: 0.2; }
+      100% { transform: translateX(5%) rotate(-8deg); opacity: 0.4; }
+    }
+    
+    /* Light Mode - Dyson Sphere Effect */
+    .light-mode .cosmic-background {
+      background: radial-gradient(circle at center, rgba(255, 200, 80, 0.2) 0%, var(--bg) 70%);
+    }
+    
+    /* Dyson sphere grid lines for light mode */
+    .light-mode .cosmic-background::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(to right, rgba(240, 101, 29, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(240, 101, 29, 0.05) 1px, transparent 1px);
+      background-size: 50px 50px;
+      z-index: 1;
+    }
+    
+    .light-mode .cosmic-background::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(circle at center, transparent 50%, rgba(240, 101, 29, 0.08) 100%);
+      z-index: 1;
+    }
+    
+    /* Header */
+    .header {
+      padding: var(--spacing-md) 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+    }
+    
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-family: var(--font-serif);
+      font-weight: 600;
+      font-size: 1.1rem;
+      letter-spacing: 0.05em;
+    }
+    
+    .nav {
+      display: flex;
+      gap: var(--spacing-md);
+      align-items: center;
+    }
+    
+    .nav-link {
+      position: relative;
+      padding-bottom: 3px;
+      font-weight: 500;
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 1px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--accent);
+      transition: width 0.3s ease;
+    }
+    
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    
+    /* Theme Toggle Button */
+    .theme-toggle {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      color: var(--text);
+      cursor: pointer;
+      padding: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    .theme-toggle:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .theme-toggle .fa-sun {
+      display: none;
+    }
+    
+    .theme-toggle .fa-moon {
+      display: block;
+    }
+    
+    .light-mode .theme-toggle .fa-sun {
+      display: block;
+    }
+    
+    .light-mode .theme-toggle .fa-moon {
+      display: none;
+    }
+    
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      padding-top: var(--spacing-lg);
+    }
+    
+    .hero-content {
+      max-width: 700px;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .hero-subtitle {
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: var(--spacing-md);
+      opacity: 0.9;
+      color: var(--text-light);
+    }
+    
+    .hero p {
+      font-size: 1.3rem;
+      line-height: 1.6;
+    }
+    
+    .hero-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-sm);
+      margin-top: var(--spacing-lg);
+    }
+    
+    .hero-link {
+      padding: 0.5rem 1rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-radius: 50px;
+      background-color: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+    
+    .hero-link:hover {
+      background-color: rgba(29, 155, 240, 0.2);
+      transform: translateY(-2px);
+    }
+    
+    .light-mode .hero-link:hover {
+      background-color: rgba(240, 101, 29, 0.2);
+    }
+    
+    .headshot {
+      position: absolute;
+      top: 40%;
+      right: 15%;
+      transform: translateY(-50%);
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), 0 0 0 5px rgba(255, 255, 255, 0.1);
+      z-index: 1;
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+    
+    .headshot:hover {
+      transform: translateY(-52%) scale(1.02);
+      box-shadow: 0 15px 50px rgba(29, 155, 240, 0.3), 0 0 0 5px rgba(29, 155, 240, 0.2);
+    }
+    
+    .light-mode .headshot {
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15), 0 0 0 5px rgba(240, 101, 29, 0.1);
+    }
+    
+    .light-mode .headshot:hover {
+      box-shadow: 0 15px 50px rgba(240, 101, 29, 0.2), 0 0 0 5px rgba(240, 101, 29, 0.15);
+    }
+    
+    /* Sections */
+    .section {
+      padding: var(--spacing-xl) 0;
+      position: relative;
+    }
+    
+    .section-title {
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    /* About */
+    .about-content {
+      max-width: 800px;
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+    
+    /* Publications */
+    .pub-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: var(--spacing-lg);
+    }
+    
+    .pub-item {
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--card-border);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      box-shadow: var(--card-shadow);
+    }
+    
+    .pub-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+    }
+    
+    .light-mode .pub-item:hover {
+      box-shadow: 0 15px 50px rgba(240, 101, 29, 0.15);
+    }
+    
+    .pub-img-container {
+      overflow: hidden;
+    }
+    
+    .pub-img {
+      aspect-ratio: 16/9;
+      width: 100%;
+      object-fit: cover;
+      border-radius: var(--border-radius) var(--border-radius) 0 0;
+      transition: transform 0.5s ease;
+    }
+    
+    .pub-item:hover .pub-img {
+      transform: scale(1.05);
+    }
+    
+    .pub-content {
+      padding: var(--spacing-md);
+    }
+    
+    .pub-title {
+      font-size: 2rem;
+      margin-bottom: var(--spacing-xs);
+      line-height: 1.2;
+    }
+    
+    .pub-authors {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-bottom: var(--spacing-xs);
+    }
+    
+    .pub-venue {
+      font-size: 0.9rem;
+      font-style: italic;
+      margin-bottom: var(--spacing-xs);
+      color: var(--accent);
+    }
+    
+    .pub-desc {
+      font-size: 0.95rem;
+      color: var(--text-light);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .pub-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+      padding-top: var(--spacing-sm);
+    }
+    
+    .light-mode .pub-links {
+      border-top: 1px solid rgba(0, 0, 0, 0.07);
+    }
+    
+    .pub-link {
+      font-size: 0.9rem;
+      color: var(--text);
+      padding: 0.4rem 0.8rem;
+      border-radius: 50px;
+      background-color: rgba(255, 255, 255, 0.07);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all 0.3s ease;
+    }
+    
+    .light-mode .pub-link {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+    
+    .pub-link:hover {
+      background-color: var(--accent);
+      color: white;
+    }
+    
+    /* Projects */
+    .project-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: var(--spacing-lg);
+    }
+    
+    .project-item {
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--card-border);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      box-shadow: var(--card-shadow);
+    }
+    
+    .project-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+    }
+    
+    .light-mode .project-item:hover {
+      box-shadow: 0 15px 50px rgba(240, 101, 29, 0.15);
+    }
+    
+    .project-img-container {
+      overflow: hidden;
+    }
+    
+    .project-img {
+      aspect-ratio: 16/9;
+      width: 100%;
+      object-fit: cover;
+      border-radius: var(--border-radius) var(--border-radius) 0 0;
+      transition: transform 0.5s ease;
+    }
+    
+    .project-item:hover .project-img {
+      transform: scale(1.05);
+    }
+    
+    .project-content {
+      padding: var(--spacing-md);
+    }
+    
+    .project-title {
+      font-size: 2rem;
+      margin-bottom: var(--spacing-xs);
+      line-height: 1.2;
+    }
+    
+    .project-desc {
+      font-size: 0.95rem;
+      color: var(--text-light);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .project-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+      padding-top: var(--spacing-sm);
+    }
+    
+    .light-mode .project-links {
+      border-top: 1px solid rgba(0, 0, 0, 0.07);
+    }
+    
+    .project-link {
+      font-size: 0.9rem;
+      color: var(--text);
+      padding: 0.4rem 0.8rem;
+      border-radius: 50px;
+      background-color: rgba(255, 255, 255, 0.07);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all 0.3s ease;
+    }
+    
+    .light-mode .project-link {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+    
+    .project-link:hover {
+      background-color: var(--accent);
+      color: white;
+    }
+    
+    /* Contact */
+    .contact {
+      position: relative;
+    }
+    
+    .contact-content {
+      padding: var(--spacing-lg);
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--card-shadow);
+      max-width: 800px;
+    }
+    
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-md);
+    }
+    
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 50px;
+      background-color: rgba(255, 255, 255, 0.07);
+      transition: all 0.3s ease;
+    }
+    
+    .light-mode .contact-link {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+    
+    .contact-link:hover {
+      background-color: var(--accent);
+      color: white;
+      transform: translateY(-2px);
+    }
+    
+    .contact-link i {
+      color: var(--icon-color);
+    }
+    
+    .contact-link:hover i {
+      color: white;
+    }
+    
+    .light-mode .contact-link:hover i {
+      color: white;
+    }
+    
+    /* Footer */
+    .footer {
+      background-color: rgba(10, 10, 20, 0.7);
+      backdrop-filter: blur(10px);
+      padding: var(--spacing-lg) 0 var(--spacing-sm);
+      text-align: center;
+      color: var(--text-light);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--card-border);
+    }
+    
+    .light-mode .footer {
+      background-color: rgba(255, 252, 245, 0.7);
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    /* Responsive */
+    @media (max-width: 1100px) {
+      .headshot {
+        width: 280px;
+        height: 280px;
+        right: 5%;
+      }
+      
+      .pub-list,
+      .project-list {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .headshot {
+        position: relative;
+        top: auto;
+        right: auto;
+        left: auto;
+        transform: none;
+        margin: var(--spacing-md) auto;
+        width: 250px;
+        height: 250px;
+      }
+      
+      .headshot:hover {
+        transform: scale(1.02);
+      }
+      
+      .hero {
+        padding-top: 100px;
+        min-height: 100vh;
+        text-align: center;
+        display: block;
+      }
+      
+      .hero-content {
+        margin: 0 auto;
+      }
+      
+      .hero-links {
+        justify-content: center;
+      }
+      
+      .section {
+        padding: var(--spacing-lg) 0;
+      }
+      
+      .pub-list,
+      .project-list {
+        grid-template-columns: 1fr;
+      }
+      
+      .nav {
+        display: none;
+      }
+      
+      .contact-content {
+        padding: var(--spacing-md);
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .hero-link,
+      .contact-link {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+      }
+      
+      .contact-links {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+    
+    /* Animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.8s ease forwards;
+      opacity: 0;
+    }
+    
+    .delay-1 {
+      animation-delay: 0.2s;
+    }
+    
+    .delay-2 {
+      animation-delay: 0.4s;
+    }
+    
+    .delay-3 {
+      animation-delay: 0.6s;
+    }
+    
+    /* Glow effects */
+    .text-glow {
+      text-shadow: 0 0 10px rgba(29, 155, 240, 0.3);
+    }
+    
+    .light-mode .section-title.text-glow {
+      text-shadow: 0 0 10px rgba(240, 101, 29, 0.3);
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: rgba(29, 155, 240, 0.3);
+      border-radius: 5px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(29, 155, 240, 0.5);
+    }
+    
+    .light-mode ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.03);
+    }
+    
+    .light-mode ::-webkit-scrollbar-thumb {
+      background: rgba(240, 101, 29, 0.2);
+    }
+    
+    .light-mode ::-webkit-scrollbar-thumb:hover {
+      background: rgba(240, 101, 29, 0.4);
+    }
+  </style>
 </head>
 <body>
+  <!-- Cosmic Background -->
+  <div class="cosmic-background">
+    <div class="stars" id="stars"></div>
+    <div class="nebula"></div>
+    <div class="aurora"></div>
+  </div>
 
-<section id="cover" style="background-image: url('images/ocean_pic.png')">
-    <div class="cover-blurb">
-        <div class="blurb-content">
-            <!-- Left Section -->
-            <div class="left-section">
-                <!-- About Section -->
-                <div class="about-section">
-                    <h2>James Campbell</h2>
-                    <p>I am first-year CS PhD student at CMU.<br/><br/>Currently, some of my interests include: LLM agents, evaluation, post-training, alignment, and adaptive inference-time compute.<br/><br/>I am very eager to meet other ambitious people! If you'd like to chat, please don't hesitate to get in touch.</p>
-                </div>
-                <!-- Navigation -->
-                <nav class="prominent-nav">
-                    <ul>
-                        <li><a href="#publications">Papers</a></li>
-                        <li><a href="#projects">Projects</a></li>
-                        <li><a href="#blog">Blog</a></li>
-                    </ul>
-                </nav>
-                <!-- Contact Section -->
-                <div class="contact-section">
-                    <a href="https://linkedin.com/in/jamescampbell57"><i class="fab fa-linkedin"></i>LinkedIn</a>
-                    <a href="https://github.com/jam3scampbell"><i class="fab fa-github"></i>jam3scampbell</a>
-                    <a href="https://twitter.com/jam3scampbell"><i class="fa-brands fa-x-twitter"></i>@jam3scampbell</a>
-                    <a href="mailto:jamescampbell@cmu.edu"><i class="fas fa-envelope"></i>jamescampbell@cmu.edu</a>            
-                </div>
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-container">
+      <a href="#" class="logo text-glow">James Campbell</a>
+      <nav class="nav">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#publications" class="nav-link">Papers</a>
+        <a href="#projects" class="nav-link">Projects</a>
+        <a href="#contact" class="nav-link">Contact</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark/light mode">
+          <i class="fas fa-moon"></i>
+          <i class="fas fa-sun"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content fade-in">
+        <h1 class="text-glow">James Campbell</h1>
+        <p class="hero-subtitle">CS PhD student at CMU</p>
+        <p>Currently, some of my interests include: LLM agents, evaluation, post-training, alignment, and adaptive inference-time compute.</p>
+        <p>I am very eager to meet other ambitious people! If you'd like to chat, please don't hesitate to get in touch.</p>
+        <div class="hero-links">
+          <a href="https://linkedin.com/in/jamescampbell57" class="hero-link"><i class="fab fa-linkedin"></i> LinkedIn</a>
+          <a href="https://github.com/jam3scampbell" class="hero-link"><i class="fab fa-github"></i> jam3scampbell</a>
+          <a href="https://twitter.com/jam3scampbell" class="hero-link"><i class="fa-brands fa-x-twitter"></i> @jam3scampbell</a>
+          <a href="mailto:jamescampbell@cmu.edu" class="hero-link"><i class="fas fa-envelope"></i> jamescampbell@cmu.edu</a>
+        </div>
+      </div>
+      <img src="images/x_headshot.jpeg" alt="James Campbell" class="headshot fade-in delay-1">
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="section" id="about">
+    <div class="container">
+      <h2 class="section-title text-glow">About</h2>
+      <div class="about-content fade-in">
+        <p>I am CS PhD student at Carnegie Mellon University advised by Yiming Yang. At a high level, my research aims to understand the ingredients for general intelligence while ensuring its safety. Right now, this means thinking a lot about LLM agents and inference-time compute scaling.</p>
+        <p>As an undergrad at Cornell, I worked on LLM interpretability and truthfulness, and was a primary contributor to the papers <i>Representation Engineering</i> and <i>Localizing Lying in Llama</i>. I also worked at Gray Swan AI on adversarial robustness and evaluations.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Publications -->
+  <section class="section" id="publications">
+    <div class="container">
+      <h2 class="section-title text-glow">Papers</h2>
+      <div class="pub-list">
+        <!-- Paper 1 -->
+        <div class="pub-item fade-in">
+          <div class="pub-img-container">
+            <img src="images/aidanbench_fig.png" alt="AidanBench" class="pub-img">
+          </div>
+          <div class="pub-content">
+            <h3 class="pub-title">AidanBench: Stress-Testing Language Model Creativity on Open-Ended Questions</h3>
+            <p class="pub-authors">Aidan McLaughlin*, <strong>James Campbell*</strong>, Anuja Uppuluri*, Yiming Yang</p>
+            <p class="pub-venue">Presented at NeurIPS 2024 Language Gamification Workshop</p>
+            <p class="pub-desc">Summary: We benchmark the ability of models to come up with as many original answers as they can to open-ended questions.</p>
+            <div class="pub-links">
+              <a href="https://github.com/aidanmclaughlin/Aidan-Bench" class="pub-link" target="_blank"><i class="fab fa-github"></i> Code</a>
             </div>
-            <!-- Headshot -->
-            <div class="headshot-section">
-                <img src="images/x_headshot.jpeg" alt="Headshot of James Campbell" class="headshot">
+          </div>
+        </div>
+        
+        <!-- Paper 2 -->
+        <div class="pub-item fade-in delay-1">
+          <div class="pub-img-container">
+            <img src="images/llama_lying_icon.png" alt="Localizing Lying in Llama" class="pub-img">
+          </div>
+          <div class="pub-content">
+            <h3 class="pub-title">Localizing Lying in Llama: Understanding Instructed Dishonesty on True-False Questions</h3>
+            <p class="pub-authors"><strong>James Campbell*</strong>, Phillip Guo*, Richard Ren*</p>
+            <p class="pub-venue">Presented at NeurIPS 2023 SoLaR Workshop</p>
+            <p class="pub-desc">Summary: We prompt Llama-2-70B-chat to lie and localize mechanisms involved using activation patching and linear probing.</p>
+            <div class="pub-links">
+              <a href="https://arxiv.org/abs/2311.15131" class="pub-link" target="_blank"><i class="fas fa-file-pdf"></i> ArXiv</a>
+              <a href="https://github.com/jam3scampbell/llama-lying" class="pub-link" target="_blank"><i class="fab fa-github"></i> Code</a>
+              <a href="https://x.com/jam3scampbell/status/1729981499397603558?s=20" class="pub-link" target="_blank"><i class="fa-brands fa-x-twitter"></i> Thread</a>
             </div>
+          </div>
         </div>
-    </div>
-    <div class="cover-fade"></div>
-</section>
-
-  <main class="content-container">
-
-
-<section class="section section-about" id="about">
-    <h2>About</h2>
-    <div class="special-about">
-    I am CS PhD student at Carnegie Mellon University advised by Yiming Yang. At a high level, my research aims to understand the ingredients for general intelligence while ensuring its safety. Right now, this means thinking a lot about LLM agents and inference-time compute scaling.<br/><br/>As an undergrad at Cornell, I worked on LLM interpretability and truthfulness, and was a primary contributor to the papers <i>Representation Engineering</i> and <i>Localizing Lying in Llama</i>. I also worked at Gray Swan AI on adversarial robustness and evaluations.
-    </div>
-</section>
-
-<section class="section publication-section" id="publications">
-    <h2>Papers</h2>
-
-    <div class="publication-card">
-        <img src="./images/aidanbench_fig.png" alt="Image">
-        <div class="pub-info">
-            <h3 class="publication-title">AidanBench: Stress-Testing Language Model Creativity on Open-Ended Questions</h3>
-            <p class="publication-authors">Aidan McLaughlin*, <strong>James Campbell*</strong>, Anuja Uppuluri*, Yiming Yang</p>
-            <p class="publication-venue">Presented at NeurIPS 2024 Language Gamification Workshop</p>
-            <p class="publication-abstract">Summary: We benchmark the ability of models to come up with as many original answers as they can to open-ended questions.</p>
-            <a class="publication-link" href="https://github.com/aidanmclaughlin/Aidan-Bench" target="_blank">Code</a> 
+        
+        <!-- Paper 3 -->
+        <div class="pub-item fade-in delay-2">
+          <div class="pub-img-container">
+            <img src="images/repe_website_icon.png" alt="Representation Engineering" class="pub-img">
+          </div>
+          <div class="pub-content">
+            <h3 class="pub-title">Representation Engineering: A Top-Down Approach to AI Transparency</h3>
+            <p class="pub-authors">Andy Zou, Long Phan*, Sarah Chen*, <strong>James Campbell*</strong>, Phillip Guo*, Richard Ren*, et al.</p>
+            <p class="pub-venue">ArXiv Preprint</p>
+            <p class="pub-desc">Summary: We introduce the field of Representation Engineering which seeks to understand and control LLM's using a top-down approach.</p>
+            <div class="pub-links">
+              <a href="https://arxiv.org/abs/2310.01405" class="pub-link" target="_blank"><i class="fas fa-file-pdf"></i> ArXiv</a>
+              <a href="https://www.ai-transparency.org" class="pub-link" target="_blank"><i class="fas fa-globe"></i> Website</a>
+              <a href="https://github.com/andyzoujm/representation-engineering" class="pub-link" target="_blank"><i class="fab fa-github"></i> Code</a>
+              <a href="https://www.foxnews.com/us/researchers-shed-light-how-read-control-ai-systems-minds?fbclid=IwAR2tz842osxnwju_Kk8i0YCsWWc8Rn6Q2cX3pfbK5T0RBQiJ3zhgf2cCLi8_aem_AUp3P_0m0jMChtrkIrghFTM2PvTCVrWPz9fy3suzkWbgrnjMMirot4TwxBZZ0XDUnbg" class="pub-link" target="_blank"><i class="fas fa-newspaper"></i> Coverage</a>
+              <a href="https://www.astralcodexten.com/p/the-road-to-honest-ai" class="pub-link" target="_blank"><i class="fas fa-book"></i> Explainer</a>
+            </div>
+          </div>
         </div>
-    </div>
-
-    <div class="publication-card">
-        <img src="./images/llama_lying_icon.png" alt="Image for paper 1">
-        <div class="pub-info">
-            <h3 class="publication-title">Localizing Lying in Llama: Understanding Instructed
-                Dishonesty on True-False Questions Through
-                Prompting, Probing, and Patching</h3>
-            <p class="publication-authors"><strong>James Campbell*</strong>, Phillip Guo*, Richard Ren*</p>
-            <p class="publication-venue">Presented at NeurIPS 2023 SoLaR Workshop</p>
-            <p class="publication-abstract">Summary: We prompt Llama-2-70B-chat to lie and localize mechanisms involved using activation patching and linear probing.</p>
-            <a class="publication-link" href="https://arxiv.org/abs/2311.15131" target="_blank">ArXiv</a> |
-            <a class="publication-link" href="https://github.com/jam3scampbell/llama-lying" target="_blank">Code</a> |
-            <a class="publication-link" href="https://x.com/jam3scampbell/status/1729981499397603558?s=20" target="_blank">Thread</a>
+        
+        <!-- Paper 4 -->
+        <div class="pub-item fade-in delay-3">
+          <div class="pub-img-container">
+            <img src="images/curj_pub.png" alt="Biological Plausibility" class="pub-img">
+          </div>
+          <div class="pub-content">
+            <h3 class="pub-title">Considerations of Biological Plausibility in Deep Learning</h3>
+            <p class="pub-authors"><strong>James Campbell</strong></p>
+            <p class="pub-venue">Published front page of the Cornell Undergraduate Research Journal (CURJ)<br/>Winner of the $300 James E. Rice Award</p>
+            <p class="pub-desc">A literature review of learning algorithms and their biological plausibility</p>
+            <div class="pub-links">
+              <a href="https://journals.library.cornell.edu/index.php/CURJ/article/view/660" class="pub-link" target="_blank"><i class="fas fa-file-pdf"></i> Paper</a>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </section>
+
+  <!-- Projects -->
+  <section class="section" id="projects">
+    <div class="container">
+      <h2 class="section-title text-glow">Projects</h2>
+      <div class="project-list">
+        <!-- Project 1 -->
+        <div class="project-item fade-in">
+          <div class="project-img-container">
+            <img src="images/timeline.png" alt="AI-Timeline" class="project-img">
+          </div>
+          <div class="project-content">
+            <h3 class="project-title">AI-Timeline.org</h3>
+            <p class="project-desc">AI-Timeline.org is an interactive timeline built in React documenting the last 10 years of AI progress.</p>
+            <div class="project-links">
+              <a href="https://ai-timeline.org" class="project-link" target="_blank"><i class="fas fa-globe"></i> Site</a>
+              <a href="https://github.com/jam3scampbell/ai-timeline.org" class="project-link" target="_blank"><i class="fab fa-github"></i> Code</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Project 2 -->
+        <div class="project-item fade-in delay-1">
+          <div class="project-img-container">
+            <img src="images/proctor_icon.png" alt="ProctorAI" class="project-img">
+          </div>
+          <div class="project-content">
+            <h3 class="project-title">ProctorAI</h3>
+            <p class="project-desc">Proctor is a multimodal AI companion that watches your screen and yells at you if it sees you being unproductive. It has over 300 stars on Github.</p>
+            <div class="project-links">
+              <a href="https://github.com/jam3scampbell/ProctorAI" class="project-link" target="_blank"><i class="fab fa-github"></i> Code</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Project 3 -->
+        <div class="project-item fade-in delay-2">
+          <div class="project-img-container">
+            <img src="images/symmetry_website.png" alt="Theoretical Bound" class="project-img">
+          </div>
+          <div class="project-content">
+            <h3 class="project-title">Theoretical Bound on the Weights of a Neural Network under Nesterov's Accelerated Gradient Flow</h3>
+            <p class="project-desc">I solved an "open question" posed in a previous paper by deriving this bound on the weights of a neural network. This was done in summer of 2021 during an REU at Johns Hopkins under Rene Vidal.</p>
+            <div class="project-links">
+              <a href="pdfs/NAGF_proof.pdf" class="project-link" target="_blank"><i class="fas fa-file-pdf"></i> PDF</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Project 4 -->
+        <div class="project-item fade-in delay-3">
+          <div class="project-img-container">
+            <img src="images/bair_website.png" alt="Neural Network Linearization" class="project-img">
+          </div>
+          <div class="project-content">
+            <h3 class="project-title">Neural Network Linearization for Out-of-Distribution Robustness</h3>
+            <p class="project-desc">In summer of 2022, I worked with Yi Ma on improving out-of-distribution robustness using the empirical neural tangent kernel.</p>
+            <div class="project-links">
+              <a href="pdfs/SUPERB poster.pdf" class="project-link" target="_blank"><i class="fas fa-file-pdf"></i> Poster</a>
+              <a href="pdfs/SUPERB presentation.pptx" class="project-link" target="_blank"><i class="fas fa-file-powerpoint"></i> Slides</a>
+              <a href="https://github.com/jam3scampbell/nlp-robust-finetuning" class="project-link" target="_blank"><i class="fab fa-github"></i> Code</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Project 5 -->
+        <div class="project-item fade-in">
+          <div class="project-img-container">
+            <img src="images/cluster_website.png" alt="Data-driven clustering" class="project-img">
+          </div>
+          <div class="project-content">
+            <h3 class="project-title">Data-driven clustering of neural responses to a large set of natural images</h3>
+            <p class="project-desc">I investigated the clusterability of visual representations in the brain. This work was done in the Computational Connectomics Lab at Cornell and was presented as a poster at OHBM.</p>
+            <div class="project-links">
+              <a href="pdfs/OHBM_2022_Image_response_clustering.pdf" class="project-link" target="_blank"><i class="fas fa-file-pdf"></i> Abstract</a>
+              <a href="pdfs/OHBM_poster.pdf" class="project-link" target="_blank"><i class="fas fa-file-pdf"></i> Poster</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Project 6 -->
+        <div class="project-item fade-in delay-1">
+          <div class="project-img-container">
+            <img src="images/compositionality_website.png" alt="Additive Compositionality" class="project-img">
+          </div>
+          <div class="project-content">
+            <h3 class="project-title">Exploring Additive Compositionality in the Brain</h3>
+            <p class="project-desc">I conducted experiments attempting to understand the extent to which semantic representations in the brain exhibit additive compositionality, i.e. does representation(A) + representation(B) = representation(A+B).</p>
+            <div class="project-links">
+              <a href="pdfs/Additive Compositionality Presentation.pptx" class="project-link" target="_blank"><i class="fas fa-file-powerpoint"></i> Slides</a>
+              <a href="https://github.com/jam3scampbell/brain-representations" class="project-link" target="_blank"><i class="fab fa-github"></i> Code</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Project 7 -->
+        <div class="project-item fade-in delay-2">
+          <div class="project-img-container">
+            <img src="images/kaggle_website.png" alt="Kaggle Competition" class="project-img">
+          </div>
+          <div class="project-content">
+            <h3 class="project-title">Cornell Machine Learning Kaggle Competition</h3>
+            <p class="project-desc">I came in first out of 155 participants in a Kaggle competition hosted by Cornell's big machine learning class.</p>
+            <div class="project-links">
+              <a href="https://www.kaggle.com/competitions/cs-4780-covid-case-hunters/leaderboard" class="project-link" target="_blank"><i class="fas fa-trophy"></i> Kaggle</a>
+              <a href="https://github.com/jam3scampbell/cornell-ml-kaggle-winner" class="project-link" target="_blank"><i class="fab fa-github"></i> Code</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Project 8 -->
+        <div class="project-item fade-in delay-3">
+          <div class="project-img-container">
+            <img src="images/cereberto_website.png" alt="CereBERTo" class="project-img">
+          </div>
+          <div class="project-content">
+            <h3 class="project-title">CereBERTo: Improving Distributional Robustness with Brain-Like Language Representations</h3>
+            <p class="project-desc">Improving the out-of-distribution robustness of BERT and GPT-2 by pretraining them to predict brain fMRI data.</p>
+            <div class="project-links">
+              <a href="https://github.com/jam3scampbell/NLP-brain-biased-robustness" class="project-link" target="_blank"><i class="fab fa-github"></i> Code</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="section contact" id="contact">
+    <div class="container">
+      <h2 class="section-title text-glow">Contact</h2>
+      <div class="contact-content fade-in">
+        <p>I am very eager to meet other ambitious people! If you'd like to chat, please don't hesitate to get in touch.</p>
+        <div class="contact-links">
+          <a href="mailto:jamescampbell@cmu.edu" class="contact-link"><i class="fas fa-envelope"></i> jamescampbell@cmu.edu</a>
+          <a href="https://linkedin.com/in/jamescampbell57" class="contact-link"><i class="fab fa-linkedin"></i> LinkedIn</a>
+          <a href="https://github.com/jam3scampbell" class="contact-link"><i class="fab fa-github"></i> GitHub</a>
+          <a href="https://twitter.com/jam3scampbell" class="contact-link"><i class="fa-brands fa-x-twitter"></i> Twitter</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-links">
+        <a href="#about">About</a>
+        <a href="#publications">Papers</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <p>&copy; 2025 James Campbell</p>
+    </div>
+  </footer>
+
+  <script>
+    // Generate stars
+    function generateStars() {
+      const stars = document.getElementById('stars');
+      const count = 300; // Increased star count
+      
+      for (let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        
+        // Random position
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        
+        // Random size (larger)
+        const size = 0.5 + Math.random() * 2.5;
+        
+        // Random animation duration and delay (faster)
+        const duration = 2 + Math.random() * 3;
+        const delay = Math.random() * 3;
+        const opacity = 0.7 + Math.random() * 0.3; // Brighter
+        
+        star.style.left = `${x}%`;
+        star.style.top = `${y}%`;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.setProperty('--duration', `${duration}s`);
+        star.style.setProperty('--delay', `${delay}s`);
+        star.style.setProperty('--opacity', opacity);
+        
+        stars.appendChild(star);
+      }
+    }
     
-    <div class="publication-card">
-        <img src="./images/repe_website_icon.png" alt="Image for paper 2">
-        <div class="pub-info">
-            <h3 class="publication-title">Representation Engineering: A Top-Down Approach to AI Transparency</h3>
-            <p class="publication-authors">Andy Zou, Long Phan*, Sarah Chen*, <strong>James Campbell*</strong>, Phillip Guo*, Richard Ren*, Alexander Pan, Xuwang Yin, Mantas Mazeika, Ann-Kathrin Dombrowski, Shashwat Goel, Nathaniel Li, Michael J. Byun, Zifan Wang, Alex Mallen, Steven Basart, Sanmi Koyejo, Dawn Song, Matt Fredrikson, J. Zico Kolter, Dan Hendrycks</p>
-            <p class="publication-abstract">Summary: We introduce the field of Representation Engineering which seeks to understand and control LLM's using a top-down approach.</p>
-            <a class="publication-link" href="https://arxiv.org/abs/2310.01405" target="_blank">ArXiv</a> | 
-            <a class="publication-link" href="https://www.ai-transparency.org" target="_blank">Website</a> |
-            <a class="publication-link" href="https://github.com/andyzoujm/representation-engineering" target="_blank">Code</a> |
-            <a class="publication-link" href="https://www.foxnews.com/us/researchers-shed-light-how-read-control-ai-systems-minds?fbclid=IwAR2tz842osxnwju_Kk8i0YCsWWc8Rn6Q2cX3pfbK5T0RBQiJ3zhgf2cCLi8_aem_AUp3P_0m0jMChtrkIrghFTM2PvTCVrWPz9fy3suzkWbgrnjMMirot4TwxBZZ0XDUnbg" target="_blank">Coverage</a> |
-            <a class="publication-link" href="https://www.astralcodexten.com/p/the-road-to-honest-ai" target="_blank">Explainer</a>
-        </div>
-    </div>
-
-    <div class="publication-card">
-        <img src="./images/curj_pub.png" alt="Image for previous paper">
-        <div class="pub-info">
-            <h3 class="publication-title">Considerations of Biological Plausibility in Deep Learning</h3>
-            <p class="publication-authors"><strong>James Campbell</strong></p>
-            <p class="publication-venue">Published front page of the Cornell Undergraduate Research Journal (CURJ)<br/>Winner of the $300 James E. Rice Award</p>
-            <p class="publication-abstract">A literature review of learning algorithms and their biological plausibility</p>
-            <a class="publication-link" href="https://journals.library.cornell.edu/index.php/CURJ/article/view/660" target="_blank">Paper</a>
-        </div>
-    </div>
-
-</section>
-
-
+    // Generate solar flares for light mode
+    function generateSolarFlares() {
+      if (!document.body.classList.contains('light-mode')) return;
+      
+      const stars = document.getElementById('stars');
+      const count = 5; // Just a few subtle flares
+      
+      // Clear existing flares first
+      document.querySelectorAll('.solar-flare').forEach(flare => flare.remove());
+      
+      for (let i = 0; i < count; i++) {
+        const flare = document.createElement('div');
+        flare.classList.add('solar-flare');
+        
+        // Random position around the edges
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 40 + Math.random() * 10; // Distance from center
+        const x = 50 + Math.cos(angle) * distance;
+        const y = 50 + Math.sin(angle) * distance;
+        
+        // Size and animation
+        const size = 50 + Math.random() * 100;
+        const duration = 15 + Math.random() * 10;
+        const delay = Math.random() * 5;
+        
+        flare.style.left = `${x}%`;
+        flare.style.top = `${y}%`;
+        flare.style.width = `${size}px`;
+        flare.style.height = `${size}px`;
+        flare.style.setProperty('--duration', `${duration}s`);
+        flare.style.setProperty('--delay', `${delay}s`);
+        
+        stars.appendChild(flare);
+      }
+    }
     
-<section class="section section-research" id="projects">
-    <h2>Projects</h2>
-    <div class="publication-card">
-        <img src="./images/timeline.png" alt="Image">
-        <div class="pub-info">
-            <h3 class="publication-title">AI-Timeline.org</h3>
-            <p class="publication-abstract">AI-Timeline.org is an interactive timeline built in React documenting the last 10 years of AI progress.</p>
-            <a class="publication-link" href="https://ai-timeline.org" target="_blank">Site</a> | 
-            <a class="publication-link" href="https://github.com/jam3scampbell/ai-timeline.org" target="_blank">Code</a>
-        </div>
-    </div>
-    <div class="publication-card">
-        <img src="./images/proctor_icon.png" alt="Image">
-        <div class="pub-info">
-            <h3 class="publication-title">ProctorAI</h3>
-            <p class="publication-abstract">Proctor is a multimodal AI companion that watches your screen and yells at you if it sees you being unproductive. It has over 300 stars on Github.</p>
-            <a class="publication-link" href="https://github.com/jam3scampbell/ProctorAI" target="_blank">Code</a>
-        </div>
-    </div>
-    <div class="publication-card">
-        <img src="./images/symmetry_website.png" alt="Image">
-        <div class="pub-info">
-            <h3 class="publication-title">Theoretical Bound on the Weights of a Neural Network under Nesterov's Accelerated Gradient Flow</h3>
-            <p class="publication-abstract">I solved an "open question" posed in a previous paper by deriving this bound on the weights of a neural network. This was done in summer of 2021 during an REU at Johns Hopkins under Rene Vidal. </p>
-            <a class="publication-link" href="pdfs/NAGF_proof.pdf" target="_blank">PDF</a>
-        </div>
-    </div>
-    <div class="publication-card">
-        <img src="./images/bair_website.png" alt="Image">
-        <div class="pub-info">
-            <h3 class="publication-title">Neural Network Linearization for Out-of-Distribution Robustness</h3>
-            <p class="publication-abstract">In summer of 2022, I worked with Yi Ma on improving out-of-distribution robustness using the empirical neural tangent kernel.</p>
-            <a class="publication-link" href="pdfs/SUPERB poster.pdf" target="_blank">Poster</a> | 
-            <a class="publication-link" href="pdfs/SUPERB presentation.pptx" target="_blank">Slides</a> | 
-            <a class="publication-link" href="https://github.com/jam3scampbell/nlp-robust-finetuning" target="_blank">Code</a>
-        </div>
-    </div>
-    <div class="publication-card">
-        <img src="./images/cluster_website.png" alt="Image">
-        <div class="pub-info">
-            <h3 class="publication-title">Data-driven clustering of neural responses to a large set of natural images</h3>
-            <p class="publication-abstract">I investigated the clusterability of visual representations in the brain. This work was done in the Computational Connectomics Lab at Cornell and was presented as a poster at OHBM.</p>
-            <a class="publication-link" href="pdfs/OHBM_2022_Image_response_clustering.pdf" target="_blank">Abtract</a> | 
-            <a class="publication-link" href="pdfs/OHBM_poster.pdf" target="_blank">Poster</a>
-        </div>
-    </div>
-    <div class="publication-card">
-        <img src="./images/compositionality_website.png" alt="Image">
-        <div class="pub-info">
-            <h3 class="publication-title">Exploring Additive Compositionality in the Brain</h3>
-            <p class="publication-abstract">I conducted experiments attempting to understand the extent to which semantic representations in the brain exhibit additive compositionality, i.e. does representation(A) + representation(B) = representation(A+B).</p>
-            <a class="publication-link" href="pdfs/Additive Compositionality Presentation.pptx" target="_blank">Slides</a> | 
-            <a class="publication-link" href="https://github.com/jam3scampbell/brain-representations" target="_blank">Code</a>
-        </div>
-    </div>
-    <div class="publication-card">
-        <img src="./images/kaggle_website.png" alt="Image">
-        <div class="pub-info">
-            <h3 class="publication-title">Cornell Machine Learning Kaggle Competition</h3>
-            <p class="publication-abstract">I came in first out of 155 participants in a Kaggle competition hosted by Cornell's big machine learning class.</p>
-            <a class="publication-link" href="https://www.kaggle.com/competitions/cs-4780-covid-case-hunters/leaderboard" target="_blank">Kaggle</a> | 
-            <a class="publication-link" href="https://github.com/jam3scampbell/cornell-ml-kaggle-winner" target="_blank">Code</a>
-        </div>
-    </div>
-    <div class="publication-card">
-        <img src="./images/cereberto_website.png" alt="Image">
-        <div class="pub-info">
-            <h3 class="publication-title">CereBERTo: Improving Distributional Robustness with Brain-Like Language Representations</h3>
-            <p class="publication-abstract">Improving the out-of-distribution robustness of BERT and GPT-2 by pretraining them to predict brain fMRI data.</p>
-            <a class="publication-link" href="https://github.com/jam3scampbell/NLP-brain-biased-robustness" target="_blank">Code</a>
-        </div>
-    </div>
-</section>
-
-<section class="section section-research" id="blog">
-    <h2>Blog</h2>
-    <h3>Coming Soon</h3>
-</section>
-
-
-
-</main>
-
-  
-
+    // Reveal animations on scroll
+    function reveal() {
+      const reveals = document.querySelectorAll('.fade-in');
+      
+      for (let i = 0; i < reveals.length; i++) {
+        const windowHeight = window.innerHeight;
+        const elementTop = reveals[i].getBoundingClientRect().top;
+        const elementVisible = 150;
+        
+        if (elementTop < windowHeight - elementVisible) {
+          reveals[i].style.opacity = '1';
+          reveals[i].style.transform = 'translateY(0)';
+        }
+      }
+    }
+    
+    // Theme toggle functionality
+    function toggleTheme() {
+      document.body.classList.toggle('light-mode');
+      
+      // Save preference to localStorage
+      const isLightMode = document.body.classList.contains('light-mode');
+      localStorage.setItem('lightMode', isLightMode);
+      
+      // Generate appropriate effects based on theme
+      if (isLightMode) {
+        generateSolarFlares();
+      } else {
+        // Remove solar flares when switching to dark mode
+        document.querySelectorAll('.solar-flare').forEach(flare => flare.remove());
+      }
+    }
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      generateStars();
+      reveal();
+      
+      // Check for saved theme preference
+      const savedLightMode = localStorage.getItem('lightMode');
+      if (savedLightMode === 'true') {
+        document.body.classList.add('light-mode');
+        setTimeout(generateSolarFlares, 100); // Slight delay to ensure DOM is ready
+      }
+      
+      // Set up theme toggle
+      const themeToggle = document.getElementById('theme-toggle');
+      themeToggle.addEventListener('click', toggleTheme);
+      
+      // Listen for scroll
+      window.addEventListener('scroll', reveal);
+    });
+  </script>
 </body>
 </html>
