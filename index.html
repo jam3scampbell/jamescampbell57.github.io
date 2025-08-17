@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>James Campbell</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+  <style>
+    :root {
+      /* Dark Mode (Default) */
+      --bg: #0a0a14;
+      --text: #f1f1f8;
+      --text-light: #abafc3;
+      --accent: #1d9bf0; /* Twitter blue */
+      --accent-light: rgba(29, 155, 240, 0.12);
+      --card-bg: rgba(29, 29, 47, 0.7);
+      --card-border: rgba(255, 255, 255, 0.07);
+      --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      --nebula-color: linear-gradient(125deg, rgba(13, 32, 58, 0.4), rgba(36, 65, 112, 0.1), rgba(20, 33, 61, 0.2));
+      --aurora-color: linear-gradient(90deg, rgba(29, 155, 240, 0.2) 0%, rgba(76, 201, 240, 0.1) 50%, rgba(9, 127, 183, 0.1) 100%);
+      --star-color: #fff;
+      --icon-color: var(--accent);
+      
+      /* Common Variables */
+      --spacing-xs: 0.5rem;
+      --spacing-sm: 1rem;
+      --spacing-md: 2rem;
+      --spacing-lg: 4rem;
+      --spacing-xl: 6rem;
+      --border-radius: 16px;
+      --font-serif: 'JetBrains Mono', 'Courier New', monospace;
+      --font-sans: 'IBM Plex Mono', 'Consolas', 'Monaco', monospace;
+    }
+    
+    /* Light Mode - Sun inspired */
+    .light-mode {
+      --bg: #fdf2e4;
+      --text: #1a1a2e;
+      --text-light: #4a4a6a;
+      --accent: #f0651d; /* Solar orange */
+      --accent-light: rgba(240, 101, 29, 0.12);
+      --card-bg: rgba(255, 252, 245, 0.85);
+      --card-border: rgba(240, 101, 29, 0.1);
+      --card-shadow: 0 8px 30px rgba(240, 101, 29, 0.1);
+      --nebula-color: linear-gradient(125deg, rgba(255, 200, 112, 0.3), rgba(255, 170, 70, 0.2), rgba(255, 150, 80, 0.2));
+      --aurora-color: linear-gradient(90deg, rgba(255, 184, 77, 0.15) 0%, rgba(255, 140, 40, 0.1) 50%, rgba(255, 100, 20, 0.08) 100%);
+      --star-color: #f0801d;
+      --icon-color: var(--accent);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: var(--font-sans);
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--text);
+      background-color: var(--bg);
+      overflow-x: hidden;
+    }
+    
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    
+    a:hover {
+      color: var(--accent);
+    }
+    
+    h1, h2, h3, h4 {
+      font-family: var(--font-serif);
+      font-weight: 500;
+      line-height: 1.3;
+    }
+    
+    h1 {
+      font-size: clamp(2.2rem, 4vw, 3rem);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    h2 {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      margin-bottom: var(--spacing-md);
+      position: relative;
+      display: inline-block;
+    }
+    
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 3rem;
+      height: 2px;
+      background-color: var(--accent);
+    }
+    
+    h3 {
+      font-size: clamp(1.3rem, 2vw, 1.8rem);
+      margin-bottom: var(--spacing-xs);
+    }
+    
+    p {
+      margin-bottom: var(--spacing-md);
+    }
+    
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: var(--border-radius);
+    }
+    
+    .container {
+      width: 90%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 var(--spacing-sm);
+      position: relative;
+      z-index: 2;
+    }
+    
+    /* Animation Background */
+    .cosmic-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      overflow: hidden;
+    }
+    
+    .stars {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      background: radial-gradient(ellipse at center, rgba(7, 7, 19, 0.5) 0%, rgba(10, 10, 20, 1) 100%);
+    }
+    
+    .light-mode .stars {
+      background: radial-gradient(circle at center, rgba(255, 180, 50, 0.3) 0%, rgba(253, 242, 228, 0.8) 80%);
+    }
+    
+    .star {
+      position: absolute;
+      background-color: var(--star-color);
+      border-radius: 50%;
+      opacity: 0;
+      animation: twinkle var(--duration) infinite ease-in-out;
+      animation-delay: var(--delay);
+      box-shadow: 0 0 4px 1px var(--star-color);
+    }
+    
+    .solar-flare {
+      position: absolute;
+      background: radial-gradient(circle, rgba(255, 150, 50, 0.6) 0%, rgba(255, 100, 0, 0) 70%);
+      border-radius: 50%;
+      filter: blur(20px);
+      opacity: 0;
+      animation: flare var(--duration) infinite ease-in-out;
+      animation-delay: var(--delay);
+      z-index: 0;
+    }
+    
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; transform: scale(0.3); }
+      50% { opacity: var(--opacity); transform: scale(1.2); }
+    }
+    
+    @keyframes flare {
+      0%, 100% { opacity: 0; transform: scale(0.8) rotate(0deg); }
+      50% { opacity: 0.4; transform: scale(1.2) rotate(15deg); }
+    }
+    
+    .nebula {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--nebula-color);
+      filter: blur(60px);
+      opacity: 0.5;
+      z-index: 0;
+      animation: nebula-shift 20s infinite alternate ease-in-out;
+    }
+    
+    @keyframes nebula-shift {
+      0% { transform: scale(1) rotate(0deg); opacity: 0.4; }
+      50% { opacity: 0.6; }
+      100% { transform: scale(1.1) rotate(3deg); opacity: 0.4; }
+    }
+    
+    .aurora {
+      position: absolute;
+      bottom: -100px;
+      left: -200px;
+      width: 200%;
+      height: 300px;
+      background: var(--aurora-color);
+      filter: blur(70px);
+      transform: rotate(-10deg);
+      opacity: 0.3;
+      animation: aurora-shift 15s infinite alternate ease-in-out;
+    }
+    
+    @keyframes aurora-shift {
+      0% { transform: translateX(-5%) rotate(-10deg); opacity: 0.2; }
+      100% { transform: translateX(5%) rotate(-8deg); opacity: 0.4; }
+    }
+    
+    /* Light Mode - Dyson Sphere Effect */
+    .light-mode .cosmic-background {
+      background: radial-gradient(circle at center, rgba(255, 200, 80, 0.2) 0%, var(--bg) 70%);
+    }
+    
+    /* Dyson sphere grid lines for light mode */
+    .light-mode .cosmic-background::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(to right, rgba(240, 101, 29, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(240, 101, 29, 0.05) 1px, transparent 1px);
+      background-size: 50px 50px;
+      z-index: 1;
+    }
+    
+    .light-mode .cosmic-background::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(circle at center, transparent 50%, rgba(240, 101, 29, 0.08) 100%);
+      z-index: 1;
+    }
+    
+    /* Header */
+    .header {
+      padding: var(--spacing-md) 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+    }
+    
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-family: var(--font-serif);
+      font-weight: 600;
+      font-size: 1.1rem;
+      letter-spacing: 0.05em;
+    }
+    
+    .nav {
+      display: flex;
+      gap: var(--spacing-md);
+      align-items: center;
+    }
+    
+    .nav-link {
+      position: relative;
+      padding-bottom: 3px;
+      font-weight: 500;
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 1px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--accent);
+      transition: width 0.3s ease;
+    }
+    
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    
+    /* Theme Toggle Button */
+    .theme-toggle {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      color: var(--text);
+      cursor: pointer;
+      padding: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    .theme-toggle:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .theme-toggle .fa-sun {
+      display: none;
+    }
+    
+    .theme-toggle .fa-moon {
+      display: block;
+    }
+    
+    .light-mode .theme-toggle .fa-sun {
+      display: block;
+    }
+    
+    .light-mode .theme-toggle .fa-moon {
+      display: none;
+    }
+    
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      padding-top: var(--spacing-lg);
+    }
+    
+    .hero-content {
+      max-width: 700px;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .hero-subtitle {
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: var(--spacing-md);
+      opacity: 0.9;
+      color: var(--text-light);
+    }
+    
+    .hero p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+    
+    .hero-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-sm);
+      margin-top: var(--spacing-lg);
+    }
+    
+    .hero-link {
+      padding: 0.5rem 1rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-radius: 50px;
+      background-color: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+    
+    .hero-link:hover {
+      background-color: rgba(29, 155, 240, 0.2);
+      transform: translateY(-2px);
+    }
+    
+    .light-mode .hero-link:hover {
+      background-color: rgba(240, 101, 29, 0.2);
+    }
+    
+    /* Hero list links with subtle hover effects */
+    .hero-list-link {
+      color: var(--accent);
+      position: relative;
+      display: inline-block;
+      font-weight: 500;
+      transition: all 0.25s ease;
+      padding: 2px 0;
+    }
+    
+    .hero-list-link::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: width 0.25s ease;
+    }
+    
+    .hero-list-link:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.2);
+    }
+    
+    .hero-list-link:hover::before {
+      width: 100%;
+    }
+    
+    .light-mode .hero-list-link {
+      color: var(--accent);
+    }
+    
+    .light-mode .hero-list-link::before {
+      background: var(--accent);
+    }
+    
+    .light-mode .hero-list-link:hover {
+      filter: brightness(1.2);
+    }
+    
+    .headshot {
+      position: absolute;
+      top: 50%;
+      right: 10%;
+      transform: translateY(-50%);
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), 0 0 0 5px rgba(255, 255, 255, 0.1);
+      z-index: 1;
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+    
+    .headshot:hover {
+      transform: translateY(-50%) scale(1.05);
+      box-shadow: 0 15px 50px rgba(29, 155, 240, 0.3), 0 0 0 5px rgba(29, 155, 240, 0.2);
+    }
+    
+    .light-mode .headshot {
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15), 0 0 0 5px rgba(240, 101, 29, 0.1);
+    }
+    
+    .light-mode .headshot:hover {
+      box-shadow: 0 15px 50px rgba(240, 101, 29, 0.2), 0 0 0 5px rgba(240, 101, 29, 0.15);
+    }
+    
+    /* Sections */
+    .section {
+      padding: var(--spacing-xl) 0;
+      position: relative;
+    }
+    
+    .section-title {
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    /* About */
+    .about-content {
+      max-width: 800px;
+      font-size: 1.25rem;
+      line-height: 1.8;
+    }
+    
+    /* Publications */
+    .pub-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: var(--spacing-lg);
+    }
+    
+    .pub-item {
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--card-border);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      box-shadow: var(--card-shadow);
+    }
+    
+    .pub-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+    }
+    
+    .light-mode .pub-item:hover {
+      box-shadow: 0 15px 50px rgba(240, 101, 29, 0.15);
+    }
+    
+    .pub-img-container {
+      overflow: hidden;
+    }
+    
+    .pub-img {
+      aspect-ratio: 16/9;
+      width: 100%;
+      object-fit: cover;
+      border-radius: var(--border-radius) var(--border-radius) 0 0;
+      transition: transform 0.5s ease;
+    }
+    
+    .pub-item:hover .pub-img {
+      transform: scale(1.05);
+    }
+    
+    .pub-content {
+      padding: var(--spacing-md);
+    }
+    
+    .pub-title {
+      font-size: 1.6rem;
+      margin-bottom: var(--spacing-xs);
+      line-height: 1.2;
+    }
+    
+    .pub-authors {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-bottom: var(--spacing-xs);
+    }
+    
+    .pub-venue {
+      font-size: 0.9rem;
+      font-style: italic;
+      margin-bottom: var(--spacing-xs);
+      color: var(--accent);
+    }
+    
+    .pub-desc {
+      font-size: 0.95rem;
+      color: var(--text-light);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .pub-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+      padding-top: var(--spacing-sm);
+    }
+    
+    .light-mode .pub-links {
+      border-top: 1px solid rgba(0, 0, 0, 0.07);
+    }
+    
+    .pub-link {
+      font-size: 0.9rem;
+      color: var(--text);
+      padding: 0.4rem 0.8rem;
+      border-radius: 50px;
+      background-color: rgba(255, 255, 255, 0.07);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all 0.3s ease;
+    }
+    
+    .light-mode .pub-link {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+    
+    .pub-link:hover {
+      background-color: var(--accent);
+      color: white;
+    }
+    
+    /* Projects */
+    .project-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: var(--spacing-lg);
+    }
+    
+    .project-item {
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--card-border);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      box-shadow: var(--card-shadow);
+    }
+    
+    .project-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+    }
+    
+    .light-mode .project-item:hover {
+      box-shadow: 0 15px 50px rgba(240, 101, 29, 0.15);
+    }
+    
+    .project-img-container {
+      overflow: hidden;
+    }
+    
+    .project-img {
+      aspect-ratio: 16/9;
+      width: 100%;
+      object-fit: cover;
+      border-radius: var(--border-radius) var(--border-radius) 0 0;
+      transition: transform 0.5s ease;
+    }
+    
+    .project-item:hover .project-img {
+      transform: scale(1.05);
+    }
+    
+    .project-content {
+      padding: var(--spacing-md);
+    }
+    
+    .project-title {
+      font-size: 1.6rem;
+      margin-bottom: var(--spacing-xs);
+      line-height: 1.2;
+    }
+    
+    .project-desc {
+      font-size: 0.95rem;
+      color: var(--text-light);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .project-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+      padding-top: var(--spacing-sm);
+    }
+    
+    .light-mode .project-links {
+      border-top: 1px solid rgba(0, 0, 0, 0.07);
+    }
+    
+    .project-link {
+      font-size: 0.9rem;
+      color: var(--text);
+      padding: 0.4rem 0.8rem;
+      border-radius: 50px;
+      background-color: rgba(255, 255, 255, 0.07);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all 0.3s ease;
+    }
+    
+    .light-mode .project-link {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+    
+    .project-link:hover {
+      background-color: var(--accent);
+      color: white;
+    }
+    
+    /* Contact */
+    .contact {
+      position: relative;
+    }
+    
+    .contact-content {
+      padding: var(--spacing-lg);
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--card-shadow);
+      max-width: 800px;
+    }
+    
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-md);
+    }
+    
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 50px;
+      background-color: rgba(255, 255, 255, 0.07);
+      transition: all 0.3s ease;
+    }
+    
+    .light-mode .contact-link {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+    
+    .contact-link:hover {
+      background-color: var(--accent);
+      color: white;
+      transform: translateY(-2px);
+    }
+    
+    .contact-link i {
+      color: var(--icon-color);
+    }
+    
+    .contact-link:hover i {
+      color: white;
+    }
+    
+    .light-mode .contact-link:hover i {
+      color: white;
+    }
+    
+    /* Footer */
+    .footer {
+      background-color: rgba(10, 10, 20, 0.7);
+      backdrop-filter: blur(10px);
+      padding: var(--spacing-lg) 0 var(--spacing-sm);
+      text-align: center;
+      color: var(--text-light);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--card-border);
+    }
+    
+    .light-mode .footer {
+      background-color: rgba(255, 252, 245, 0.7);
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    /* Responsive */
+    @media (max-width: 1100px) {
+      .headshot {
+        width: 240px;
+        height: 240px;
+        right: 5%;
+        top: 45%;
+      }
+      
+      .pub-list,
+      .project-list {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .headshot {
+        position: relative;
+        top: auto;
+        right: auto;
+        left: auto;
+        transform: none;
+        margin: var(--spacing-md) auto;
+        width: 250px;
+        height: 250px;
+      }
+      
+      .headshot:hover {
+        transform: scale(1.02);
+      }
+      
+      .hero {
+        padding-top: 100px;
+        min-height: 100vh;
+        text-align: center;
+        display: block;
+      }
+      
+      .hero-content {
+        margin: 0 auto;
+      }
+      
+      .hero-links {
+        justify-content: center;
+      }
+      
+      .section {
+        padding: var(--spacing-lg) 0;
+      }
+      
+      .pub-list,
+      .project-list {
+        grid-template-columns: 1fr;
+      }
+      
+      .nav {
+        display: none;
+      }
+      
+      .contact-content {
+        padding: var(--spacing-md);
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .hero-link,
+      .contact-link {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+      }
+      
+      .contact-links {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+    
+    /* Animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.8s ease forwards;
+      opacity: 0;
+    }
+    
+    .delay-1 {
+      animation-delay: 0.2s;
+    }
+    
+    .delay-2 {
+      animation-delay: 0.4s;
+    }
+    
+    .delay-3 {
+      animation-delay: 0.6s;
+    }
+    
+    /* Glow effects */
+    .text-glow {
+      text-shadow: 0 0 10px rgba(29, 155, 240, 0.3);
+    }
+    
+    .light-mode .section-title.text-glow {
+      text-shadow: 0 0 10px rgba(240, 101, 29, 0.3);
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: rgba(29, 155, 240, 0.3);
+      border-radius: 5px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(29, 155, 240, 0.5);
+    }
+    
+    .light-mode ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.03);
+    }
+    
+    .light-mode ::-webkit-scrollbar-thumb {
+      background: rgba(240, 101, 29, 0.2);
+    }
+    
+    .light-mode ::-webkit-scrollbar-thumb:hover {
+      background: rgba(240, 101, 29, 0.4);
+    }
+  </style>
+</head>
+<body>
+  <!-- Cosmic Background -->
+  <div class="cosmic-background">
+    <div class="stars" id="stars"></div>
+    <div class="nebula"></div>
+    <div class="aurora"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-container">
+      <a href="#" class="logo text-glow">James Campbell</a>
+      <nav class="nav">
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark/light mode">
+          <i class="fas fa-moon"></i>
+          <i class="fas fa-sun"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content fade-in">
+        <h1 class="text-glow">James Campbell</h1>
+        <p>I currently work at OpenAI on model personality, post-training, and personalization.</p>
+        <p>Before this, I did one year of a PhD at CMU and completed my undergrad at Cornell.</p>
+        <p>Some stuff I've worked on:</p>
+        <ul style="margin: 1.5rem 0; padding-left: 2rem; list-style-type: disc; font-size: 1rem; line-height: 1.8;">
+          <li><a href="https://ai-timeline.org" class="hero-list-link" target="_blank">AI-Timeline.org</a></li>
+          <li><a href="https://aidanbench.com" class="hero-list-link" target="_blank">AidanBench</a></li>
+          <li><a href="https://github.com/jam3scampbell/ProctorAI" class="hero-list-link" target="_blank">ProctorAI</a></li>
+          <li><a href="https://www.ai-transparency.org/" class="hero-list-link" target="_blank">Representation Engineering</a></li>
+          <li><a href="https://arxiv.org/abs/2311.15131" class="hero-list-link" target="_blank">Localizing Lying in Llama</a></li>
+        </ul>
+        <p></p>
+        <div class="hero-links">
+          <a href="https://linkedin.com/in/jamescampbell57" class="hero-link"><i class="fab fa-linkedin"></i> LinkedIn</a>
+          <a href="https://github.com/jam3scampbell" class="hero-link"><i class="fab fa-github"></i> jam3scampbell</a>
+          <a href="https://x.com/jam3scampbell" class="hero-link"><i class="fa-brands fa-x-twitter"></i> @jam3scampbell</a>
+          <a href="mailto:jamescampbell@cmu.edu" class="hero-link"><i class="fas fa-envelope"></i> jamescampbell@cmu.edu</a>
+          <a href="https://scholar.google.com/citations?user=yCx5-isAAAAJ" class="hero-link"><i class="fas fa-graduation-cap"></i> Google Scholar</a>
+        </div>
+      </div>
+      <img src="images/x_headshot.jpeg" alt="James Campbell" class="headshot fade-in delay-1">
+    </div>
+  </section>
+
+
+  <script>
+    // Generate stars
+    function generateStars() {
+      const stars = document.getElementById('stars');
+      const count = 300; // Increased star count
+      
+      for (let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        
+        // Random position
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        
+        // Random size (larger)
+        const size = 0.5 + Math.random() * 2.5;
+        
+        // Random animation duration and delay (faster)
+        const duration = 2 + Math.random() * 3;
+        const delay = Math.random() * 3;
+        const opacity = 0.7 + Math.random() * 0.3; // Brighter
+        
+        star.style.left = `${x}%`;
+        star.style.top = `${y}%`;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.setProperty('--duration', `${duration}s`);
+        star.style.setProperty('--delay', `${delay}s`);
+        star.style.setProperty('--opacity', opacity);
+        
+        stars.appendChild(star);
+      }
+    }
+    
+    // Generate solar flares for light mode
+    function generateSolarFlares() {
+      if (!document.body.classList.contains('light-mode')) return;
+      
+      const stars = document.getElementById('stars');
+      const count = 5; // Just a few subtle flares
+      
+      // Clear existing flares first
+      document.querySelectorAll('.solar-flare').forEach(flare => flare.remove());
+      
+      for (let i = 0; i < count; i++) {
+        const flare = document.createElement('div');
+        flare.classList.add('solar-flare');
+        
+        // Random position around the edges
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 40 + Math.random() * 10; // Distance from center
+        const x = 50 + Math.cos(angle) * distance;
+        const y = 50 + Math.sin(angle) * distance;
+        
+        // Size and animation
+        const size = 50 + Math.random() * 100;
+        const duration = 15 + Math.random() * 10;
+        const delay = Math.random() * 5;
+        
+        flare.style.left = `${x}%`;
+        flare.style.top = `${y}%`;
+        flare.style.width = `${size}px`;
+        flare.style.height = `${size}px`;
+        flare.style.setProperty('--duration', `${duration}s`);
+        flare.style.setProperty('--delay', `${delay}s`);
+        
+        stars.appendChild(flare);
+      }
+    }
+    
+    // Reveal animations on scroll
+    function reveal() {
+      const reveals = document.querySelectorAll('.fade-in');
+      
+      for (let i = 0; i < reveals.length; i++) {
+        const windowHeight = window.innerHeight;
+        const elementTop = reveals[i].getBoundingClientRect().top;
+        const elementVisible = 150;
+        
+        if (elementTop < windowHeight - elementVisible) {
+          reveals[i].style.opacity = '1';
+          reveals[i].style.transform = 'translateY(0)';
+        }
+      }
+    }
+    
+    // Theme toggle functionality
+    function toggleTheme() {
+      document.body.classList.toggle('light-mode');
+      
+      // Save preference to localStorage
+      const isLightMode = document.body.classList.contains('light-mode');
+      localStorage.setItem('lightMode', isLightMode);
+      
+      // Generate appropriate effects based on theme
+      if (isLightMode) {
+        generateSolarFlares();
+      } else {
+        // Remove solar flares when switching to dark mode
+        document.querySelectorAll('.solar-flare').forEach(flare => flare.remove());
+      }
+    }
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      generateStars();
+      reveal();
+      
+      // Check for saved theme preference
+      const savedLightMode = localStorage.getItem('lightMode');
+      if (savedLightMode === 'true') {
+        document.body.classList.add('light-mode');
+        setTimeout(generateSolarFlares, 100); // Slight delay to ensure DOM is ready
+      }
+      
+      // Set up theme toggle
+      const themeToggle = document.getElementById('theme-toggle');
+      themeToggle.addEventListener('click', toggleTheme);
+      
+      // Listen for scroll
+      window.addEventListener('scroll', reveal);
+    });
+  </script>
+</body>
+</html>
